@@ -14,5 +14,8 @@
 - Example: `./bin/web-crawler https://www.dsmrt.com` or `./bin/web-crawler https://www.dsmrt.com --depth=2`
 - For more information, see help: `./bin/web-crawler --help`
 
+## Test
+- Run `pytest ./src`
+
 ## Deactivate VENV
 - Run `deactivate`
