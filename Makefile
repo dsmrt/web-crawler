@@ -1,2 +1,2 @@
 build:
-	pip install --editable .
+	pip install --editable .[dev]

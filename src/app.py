@@ -1,30 +1,21 @@
-import multiprocessing as mp
-import re
 import click
-import requests
-from bs4 import BeautifulSoup
+import multiprocessing as mp
+from src.utils.parse import parse_html
+from src.utils.fetch import fetch_url
 
 # main entry point/command
 @click.command()
 @click.argument('url')
 @click.option('--depth', default=3, help='Depth of pages to follow from the initial url passed.')
-def cli(url, depth):
+def cli(url: str, depth: int):
     pool = mp.Pool(mp.cpu_count())
     parse_urls([url], depth, pool)
     pool.close()
 
 # Parse one URL
-def parse_url(url):
-    html_text = requests.get(url).text
-    soup = BeautifulSoup(html_text, 'html.parser')
-    attrs = {
-        # fetch absolute urls only
-        # also, we probably only want to follow html files?
-        'href': re.compile(r'^http(s)?://')
-    }
-
-    # Use BeautifulSoup to find all of the anchor tags
-    pages_found = soup.find_all('a', attrs=attrs,)
+def parse_url(url: str):
+    html_text = fetch_url(url)
+    pages_found= parse_html(html_text)
 
     # store all of the pages in this list
     pages = []
@@ -38,15 +29,14 @@ def parse_url(url):
 
 # Parse and array/list of URLs (and pass the depth and pool)
 # remaining_depth starts as the initial desired depth and then is decrimented as it traverses throught pages.
-def parse_urls(urls, remaining_depth, pool):
+def parse_urls(urls: list, remaining_depth:int, pool: mp.Pool):
     # once we've got to the max depth desired, we're done
     if remaining_depth <= 0:
         # output with this thread is done
-        # click.echo("<< done >>")
         return
 
     # process more urls and return an list of url lists/groups of url arrays
-    grouped_urls = pool.map(parse_url, urls)
+    grouped_urls:tuple[str, list] = pool.map(parse_url, urls)
 
     # decrement the remaining depth
     remaining_depth-=1
@@ -56,7 +46,6 @@ def parse_urls(urls, remaining_depth, pool):
         click.echo(f"Crawled: {url}")
         for url_found in group:
             click.echo(f"\t{url_found}")
-        # click.echo(f"Remaining depth: {remaining_depth}")
         parse_urls(urls=group, remaining_depth=remaining_depth, pool=pool)
 
 

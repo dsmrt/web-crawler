@@ -1,5 +1,7 @@
 # Web Crawler
 
+![tests](https://github.com/dsmrt/web-crawler/workflows/tests/badge.svg)
+
 ## Setup and Build
 - Clone the repo: `git clone git@github.com:dsmrt/web-crawler.git`
 - Change directories into the repository (`cd web-crawler`)

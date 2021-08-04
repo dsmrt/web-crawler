@@ -18,6 +18,11 @@ setuptools.setup(
         'requests',
         'bs4',
     ],
+    extras_require={
+        'dev': [
+            'pytest',
+        ]
+    },
     entry_points={
         'console_scripts': [
             'web-crawler = src.app:cli',
