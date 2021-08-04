@@ -15,7 +15,6 @@ def cli(url, depth):
 
 # Parse one URL
 def parse_url(url):
-    click.echo(f"Crawling: {url}")
     html_text = requests.get(url).text
     soup = BeautifulSoup(html_text, 'html.parser')
     attrs = {
@@ -34,7 +33,7 @@ def parse_url(url):
     for page in pages_found:
         pages.append(page.get('href'))
 
-    return pages
+    return url,pages
 
 
 # Parse and array/list of URLs (and pass the depth and pool)
@@ -53,7 +52,8 @@ def parse_urls(urls, remaining_depth, pool):
     remaining_depth-=1
 
     # loop the grouped urls, output the urls, and recursively call parse_urls to traverse more pages/urls
-    for group in grouped_urls:
+    for url,group in grouped_urls:
+        click.echo(f"Crawled: {url}")
         for url_found in group:
             click.echo(f"\t{url_found}")
         # click.echo(f"Remaining depth: {remaining_depth}")
