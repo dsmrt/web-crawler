@@ -1,6 +1,6 @@
 # Web Crawler
 
-![tests](https://github.com/dsmrt/web-crawler/workflows/tests/badge.svg)
+[![tests](https://github.com/dsmrt/web-crawler/actions/workflows/tests.yml/badge.svg)](https://github.com/dsmrt/web-crawler/actions/workflows/tests.yml)
 
 ## Setup and Build
 - Clone the repo: `git clone git@github.com:dsmrt/web-crawler.git`
